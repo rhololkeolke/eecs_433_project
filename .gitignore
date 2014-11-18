@@ -1,3 +1,10 @@
+#################
+# Project Files #
+#################
+
+# these are the RDF data files
+*.nt
+
 ##########
 # Python #
 ##########

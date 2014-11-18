@@ -51,8 +51,10 @@ elif [[ $option == "start" ]]; then
 		exit 1
 	fi
 
-	if [ "$#" -gt 1 ]]; then
-		docker run --name redis-graph -v $(readlink -f $1):/data -p 6379 -d redis redis-server --appendonly yes
+	if [ "$#" -gt 1 ]; then
+		echo "Storing redis data at $(readlink -f $2)"
+		mkdir -p $(readlink -f $2)
+		docker run --name redis-graph -v $(readlink -f $2):/data -p 6379 -d redis redis-server --appendonly yes
 	else
 		docker run --name redis-graph -p 6379 -d redis
 	fi
@@ -67,7 +69,9 @@ elif [[ $option == "restart" ]]; then
 	set -e
 
 	if [ "$#" -gt 1 ]; then
-		docker run --name redis-graph -v $(readlink -f $1):/data -p 6379 -d redis redis-server --appendonly yes
+		echo "Storing redis data at $(readlink -f $2)"
+		mkdir -p $(readlink -f $2)
+		docker run --name redis-graph -v $(readlink -f $2):/data -p 6379 -d redis redis-server --appendonly yes
 	else
 		docker run --name redis-graph -p 6379 -d redis
 	fi

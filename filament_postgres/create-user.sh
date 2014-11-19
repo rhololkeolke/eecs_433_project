@@ -119,3 +119,17 @@ CREATE INDEX def_props_field3_index ON def_props USING btree (field3);
 EOSQL
 echo ""
 echo "********def_props Table Created*********"
+
+echo "**************SETTING PERMISSIONS**********"
+gosu postgres postgres --single filament <<- EOSQL
+
+GRANT ALL on def_props to filament;
+GRANT ALL on def_props_id_seq to filament;
+GRANT ALL on edges to filament;
+GRANT ALL on edges_id_seq to filament;
+GRANT ALL on nodes to filament;
+GRANT ALL on nodes_id_seq to filament;
+
+EOSQL
+echo ""
+echo "***********FINISHED SETTING PERMISSIONS********"

@@ -54,7 +54,7 @@ elif [[ $option == "start" ]]; then
 	if [ "$#" -gt 1 ]; then
 		echo "Storing redis data at $(readlink -f $2)"
 		mkdir -p $(readlink -f $2)
-		docker run --name filament-postgres -p 5432 -d rhololkeolke/filament-postgres
+		docker run --name filament-postgres -p 5432 -v $(readlink -f $2):/var/lib/postgresql/data -d rhololkeolke/filament-postgres
 	else
 		docker run --name filament-postgres -p 5432 -d rhololkeolke/filament-postgres
 	fi
@@ -71,7 +71,7 @@ elif [[ $option == "restart" ]]; then
 	if [ "$#" -gt 1 ]; then
 		echo "Storing redis data at $(readlink -f $2)"
 		mkdir -p $(readlink -f $2)
-		docker run --name filament-postgres -p 5432
+		docker run --name filament-postgres -p 5432 -v $(readlink -f $2):/var/lib/postgresql/data -d rhololkeolke/filament-postgres
 	else
 		docker run --name filament-postgres -p 5432 -d rhololkeolke/filament-postgres
 	fi

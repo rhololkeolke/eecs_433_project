@@ -7,8 +7,7 @@ if [ "$#" -lt 1 ]; then
 	exit 1
 fi
 
-# ${1,,} converts argument 1 to lowercase
-option=${1,,}
+option=$(echo $1 | awk '{print tolower($0)}')
 if [[ $option == "status" ]]; then
 
 	if docker ps -a | grep filament-postgres &> /dev/null ; then

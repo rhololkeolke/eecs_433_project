@@ -49,6 +49,7 @@ public class DataLoading {
         DefaultGraph graph = DefaultGraph.create(new SqlStoreFactory(conn));
 
         Map<String, Node> nodes = new HashMap<String, Node>();
+        final String[] ignore_properties = {"link_source", "linkage_run", "linkid", "rdf-schema", "linkage_score", "link_target", "link_type", "rdf-syntax-ns" };
 
         try {
             Reader in = new FileReader(args[3]);
@@ -63,9 +64,24 @@ public class DataLoading {
                     conn.commit();
                 }
 
+                i++;
+
                 String node1_name = record.get(0);
                 String edge_name = record.get(1);
                 String node2_name = record.get(2);
+
+                boolean ignore_this = false;
+                for(String ignored_prop : ignore_properties)
+                {
+                    if(edge_name.contains(ignored_prop))
+                    {
+                        ignore_this = true;
+                        break;
+                    }
+                }
+
+                if(ignore_this)
+                    continue;
 
                 Node n1 = nodes.get(node1_name);
                 if(n1 == null) {
@@ -83,7 +99,6 @@ public class DataLoading {
 
                 graph.addEdge(n1, n2, edge_name);
 
-                i++;
             }
         } catch (IOException e) {
             System.err.println("Failed to parse CSV" + e.getMessage());

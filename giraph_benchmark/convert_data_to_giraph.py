@@ -47,12 +47,14 @@ if __name__ == '__main__':
 
     print "Writing data to output_file in Giraph format"
     with open(sys.argv[3], 'w') as output_file:
-        for node in nodes:
+        for i, node in enumerate(nodes):
+            if i != 0:
+                output_file.write("\n")
             output_file.write("[%d, %d, [" % (nodes[node]['id'], nodes[node]['value']))
-            for i, edge in enumerate(nodes[node]['edges']):
-                if i != 0:
+            for j, edge in enumerate(nodes[node]['edges']):
+                if j != 0:
                     output_file.write(", ")
                 output_file.write("[%d, %d]" % (edge[0], edge[1]))
-            output_file.write("]]\n")
+            output_file.write("]]")
         
     print "Finished"

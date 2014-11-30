@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class PageRank {
 
-    public Map<Goid, Double> calculatePageRank(DefaultGraph graph, double epsilon)
+    public Map<Goid, Double> calculatePageRank(DefaultGraph graph, double epsilon, boolean printIterations)
     {
         // get the out degree of each node in the graph
         Map<Goid, Integer> out_degree = new HashMap<Goid, Integer>();
@@ -58,7 +58,8 @@ public class PageRank {
                 page_rank.put(n.getId(), this_page_rank);
             }
             iteration++;
-            System.out.println("iteration: " + iteration);
+            if(printIterations)
+                System.out.println("iteration: " + iteration);
         }
 
         return page_rank;

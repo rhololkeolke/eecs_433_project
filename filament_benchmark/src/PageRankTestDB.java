@@ -73,7 +73,7 @@ public class PageRankTestDB {
 
         PageRank pageRank = new PageRank();
 
-        Map<Goid, Double> page_rank = pageRank.calculatePageRank(graph, 1.0e-3);
+        Map<Goid, Double> page_rank = pageRank.calculatePageRank(graph, 1.0e-3, true);
 
         System.out.println("Page ranks are");
 

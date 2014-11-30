@@ -21,38 +21,17 @@ import java.util.Set;
  */
 public class DataLoading {
 
-    public static void main(String[] args) {
-        String jdbcUrl = "jdbc:postgresql://" + args[0] + ":" + args[1] + "/" + args[2];
-        String user = "filament";
-        String password = "filament";
+    public void loadData(Connection conn, DefaultGraph graph, String filePath, int maxEdges)
+    {
+        int numEdges = 0;
 
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(jdbcUrl, user, password);
-        } catch (SQLException e) {
-            System.err.println("Failed to open connection to Postgres database. " + e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            conn.setAutoCommit(false);
-        } catch (SQLException e) {
-            System.err.println("Failed to set database connection to manual commit");
-            try {
-                conn.close();
-            } catch (SQLException e1) {
-                System.err.println("Failed to close connection. " + e.getMessage());
-            }
-            System.exit(1);
-        }
-
-        DefaultGraph graph = DefaultGraph.create(new SqlStoreFactory(conn));
+        System.out.println("Loading " + maxEdges + " into database");
 
         Map<String, Node> nodes = new HashMap<String, Node>();
         final String[] ignore_properties = {"link_source", "linkage_run", "linkid", "rdf-schema", "linkage_score", "link_target", "link_type", "rdf-syntax-ns" };
 
         try {
-            Reader in = new FileReader(args[3]);
+            Reader in = new FileReader(filePath);
             CSVFormat dump_format = CSVFormat.newFormat(' ');
             Iterable<CSVRecord> records = dump_format.parse(in);
 
@@ -60,7 +39,6 @@ public class DataLoading {
             for (CSVRecord record : records) {
                 if(i % 1000 == 0) {
 
-                    System.out.println("On record " + i);
                     conn.commit();
                 }
 
@@ -98,7 +76,17 @@ public class DataLoading {
                 }
 
                 graph.addEdge(n1, n2, edge_name);
+                numEdges++;
 
+                if(numEdges % (int)(.1*maxEdges) == 0)
+                {
+                    System.out.println("" + ((double)numEdges/(double)maxEdges)*100.0 + "%");
+                }
+
+                if(numEdges == maxEdges) {
+                    System.out.println("Loaded " + numEdges + " into database");
+                    break;
+                }
             }
         } catch (IOException e) {
             System.err.println("Failed to parse CSV" + e.getMessage());
@@ -127,13 +115,6 @@ public class DataLoading {
             } catch (SQLException e1) {
                 System.err.println("Failed to close connection. " + e.getMessage());
             }
-            System.exit(1);
-        }
-
-        try {
-            conn.close();
-        } catch(SQLException e) {
-            System.err.println("Failed to close connection. " + e.getMessage());
             System.exit(1);
         }
     }

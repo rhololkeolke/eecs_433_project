@@ -1,3 +1,4 @@
+import org.fgraph.Goid;
 import org.fgraph.Node;
 import org.fgraph.base.DefaultGraph;
 import org.fgraph.tstore.sql.SqlStoreFactory;
@@ -5,6 +6,7 @@ import org.fgraph.tstore.sql.SqlStoreFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by rhol on 11/29/14.
@@ -56,6 +58,7 @@ public class PageRankTestDB {
 //        graph.addEdge(page_a, page_b, "");
 //        graph.addEdge(page_b, page_a, "");
 
+
         try {
             conn.commit();
         } catch (SQLException e) {
@@ -66,6 +69,17 @@ public class PageRankTestDB {
                 System.err.println("Failed to close connection. " + e.getMessage());
             }
             System.exit(1);
+        }
+
+        PageRank pageRank = new PageRank();
+
+        Map<Goid, Double> page_rank = pageRank.calculatePageRank(graph, 1.0e-3);
+
+        System.out.println("Page ranks are");
+
+        for(Node n : graph.nodes())
+        {
+            System.out.println("Node " + n.toString() + " has page rank " + page_rank.get(n.getId()));
         }
 
         try {

@@ -17,34 +17,8 @@ import java.util.Map;
  */
 public class PageRank {
 
-    public static void main(String[] args)
+    public Map<Goid, Double> calculatePageRank(DefaultGraph graph, double epsilon)
     {
-        String jdbcUrl = "jdbc:postgresql://" + args[0] + ":" + args[1] + "/" + args[2];
-        String user = "filament";
-        String password = "filament";
-
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(jdbcUrl, user, password);
-        } catch (SQLException e) {
-            System.err.println("Failed to open connection to Postgres database. " + e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            conn.setAutoCommit(false);
-        } catch (SQLException e) {
-            System.err.println("Failed to set database connection to manual commit");
-            try {
-                conn.close();
-            } catch (SQLException e1) {
-                System.err.println("Failed to close connection. " + e.getMessage());
-            }
-            System.exit(1);
-        }
-
-        DefaultGraph graph = DefaultGraph.create(new SqlStoreFactory(conn));
-
         // get the out degree of each node in the graph
         Map<Goid, Integer> out_degree = new HashMap<Goid, Integer>();
         for(Node n : graph.nodes())
@@ -64,7 +38,7 @@ public class PageRank {
         double difference = Double.MAX_VALUE;
 
         int iteration = 0;
-        while(difference > 1.0e-3) {
+        while(difference > epsilon) {
             difference = 0;
 
             for (Node n : graph.nodes()) {
@@ -83,21 +57,10 @@ public class PageRank {
 
                 page_rank.put(n.getId(), this_page_rank);
             }
-
-            System.out.println("Difference is: " + difference + " on iteration " + iteration);
+            iteration++;
+            System.out.println("iteration: " + iteration);
         }
 
-        System.out.println("Page ranks are");
-        for(Node n : graph.nodes())
-        {
-            System.out.println("Node " + n.toString() + " has page rank " + page_rank.get(n.getId()));
-        }
-
-        try {
-            conn.close();
-        } catch(SQLException e) {
-            System.err.println("Failed to close connection. " + e.getMessage());
-            System.exit(1);
-        }
+        return page_rank;
     }
 }

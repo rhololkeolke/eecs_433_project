@@ -5,6 +5,7 @@
 # these are the RDF data files
 *.nt
 !/filament_benchmark/lib
+**/META-INF
 
 #############
 # JetBrains #

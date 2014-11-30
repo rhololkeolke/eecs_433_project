@@ -8,13 +8,13 @@ echo "Running small dataset: 10k"
 
 time ./convert_data_to_giraph.py dump.nt 10000 10k_data_${NUM_WORKERS}_workers.txt
 # check if file already exists. If so delete it
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/10k_data_${NUM_WORKERS}_workers.txt) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/10k_data_${NUM_WORKERS}_workers.txt); then
 	$HADOOP_HOME/bin/hadoop dfs -rm /user/hduser/input/10k_data_${NUM_WORKERS}_workers.txt
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_10k_${NUM_WORKERS}_workers) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_10k_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/pagerank_10k_${NUM_WORKERS}_workers
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_10k_${NUM_WORKERS}_workers) ]; then
+if $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_10k_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/shortestpaths_10k_${NUM_WORKERS}_workers
 fi
 time $HADOOP_HOME/bin/hadoop dfs -copyFromLocal 10k_data_${NUM_WORKERS}_workers.txt /user/hduser/input/10k_data_${NUM_WORKERS}_workers.txt
@@ -28,13 +28,13 @@ time $HADOOP_HOME/bin/hadoop jar $GIRAPH_HOME/giraph-examples/target/giraph-exam
 echo "Running medium dataset: 100k"
 time ./convert_data_to_giraph.py dump.nt 100000 100k_data_${NUM_WORKERS}_workers.txt
 # check if file already exists. If so delete it
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/100k_data_${NUM_WORKERS}_workers.txt) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/100k_data_${NUM_WORKERS}_workers.txt); then
 	$HADOOP_HOME/bin/hadoop dfs -rm /user/hduser/input/100k_data_${NUM_WORKERS}_workers.txt
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_100k_${NUM_WORKERS}_workers) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_100k_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/pagerank_100k_${NUM_WORKERS}_workers
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_100k_${NUM_WORKERS}_workers) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_100k_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/shortestpaths_100k_${NUM_WORKERS}_workers
 fi
 time $HADOOP_HOME/bin/hadoop dfs -copyFromLocal 100k_data_${NUM_WORKERS}_workers.txt /user/hduser/input/100k_data_${NUM_WORKERS}_workers.txt
@@ -48,13 +48,13 @@ time $HADOOP_HOME/bin/hadoop jar $GIRAPH_HOME/giraph-examples/target/giraph-exam
 echo "Running large dataset: 1mil"
 time ./convert_data_to_giraph.py dump.nt 1000000 1mil_data_${NUM_WORKERS}_workers.txt
 # check if file already exists. If so delete it
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/1mil_data_${NUM_WORKERS}_workers.txt) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/input/1mil_data_${NUM_WORKERS}_workers.txt); then
 	$HADOOP_HOME/bin/hadoop dfs -rm /user/hduser/input/1mil_data_${NUM_WORKERS}_workers.txt
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_1mil_${NUM_WORKERS}_workers) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/pagerank_1mil_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/pagerank_1mil_${NUM_WORKERS}_workers
 fi
-if [ $($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_1mil_${NUM_WORKERS}_workers) ]; then
+if ($HADOOP_HOME/bin/hadoop dfs -test -e /user/hduser/output/shortestpaths_1mil_${NUM_WORKERS}_workers); then
 	$HADOOP_HOME/bin/hadoop dfs -rmr /user/hduser/output/shortestpaths_1mil_${NUM_WORKERS}_workers
 fi
 time $HADOOP_HOME/bin/hadoop dfs -copyFromLocal 1mil_data_${NUM_WORKERS}_workers.txt /user/hduser/input/1mil_data_${NUM_WORKERS}_workers.txt
